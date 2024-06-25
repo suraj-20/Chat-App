@@ -42,9 +42,14 @@
 .user {
   background: #edf2f7;
   border-radius: 2px;
+  cursor: pointer;
 }
 
-@media screen and (max-width:998px) {
+.selected-chat {
+  background: rgba(59, 217, 244, 0.856);
+}
+
+@media screen and (max-width: 998px) {
   .chat-heading h4 {
     font-size: 1rem;
   }
@@ -53,7 +58,7 @@
   }
 }
 
-@media screen and (max-width:850px) {
+@media screen and (max-width: 850px) {
   .sidebar {
     display: none;
   }

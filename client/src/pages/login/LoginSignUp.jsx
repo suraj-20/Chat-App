@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "./LoginSignUp.css";
+import useSignup from "../../hooks/useSignup";
+import useLogin from "../../hooks/useLogin";
 
 const LoginSignUp = () => {
   const [state, setState] = useState("Login");
@@ -8,20 +10,57 @@ const LoginSignUp = () => {
     fullName: "",
     username: "",
     password: "",
+    confirmPassword: "",
     gender: "",
   });
 
+  const { loading, signup } = useSignup();
+  const { login } = useLogin();
+
   const changeHandler = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    // console.log(formData);
   };
 
-  const login = async () => {
-    console.log("User logged in", formData);
+  const handleSignup = async () => {
+    await signup(formData);
   };
 
-  const signup = async () => {
-    console.log("User Signed up", formData);
+  const handleLogin = async () => {
+    await login(formData);
   };
+
+  // const login = async () => {
+  //   console.log("User logged in", formData);
+  //   try {
+  //     const response = await axios.post(
+  //       "http://localhost:8000/api/auth/login",
+  //       formData,
+  //       {
+  //         headers: {
+  //           Accept: "application/json",
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
+
+  //     const responseData = response.data;
+  //     console.log(responseData.token);
+
+  //     if (responseData) {
+  //       localStorage.setItem("jwt", responseData.token);
+  //       alert("User logged in successfully");
+  //       navigate("/");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error in user login: ", error.message);
+  //     if (error.response && error.response.data) {
+  //       alert(error.response.data.message);
+  //     } else {
+  //       alert("An error occurred during login.");
+  //     }
+  //   }
+  // };
 
   return (
     <div className="loginSignup d-flex">
@@ -70,7 +109,7 @@ const LoginSignUp = () => {
             <></>
           )}
           {state === "Sign Up" ? (
-            <label for="gender">
+            <label htmlFor="gender">
               <select
                 value={formData.gender}
                 onChange={changeHandler}
@@ -88,12 +127,20 @@ const LoginSignUp = () => {
           )}
         </div>
         <button
-          onClick={() => {
-            state === "Login" ? login() : signup();
+          onClick={(e) => {
+            e.preventDefault();
+            state === "Login" ? handleLogin() : handleSignup();
           }}
           type="submit"
+          disabled={loading}
         >
-          Continue
+          {loading ? (
+            <div className="spinner-border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          ) : (
+            `${state === "Login" ? "Login" : "Sign Up"}`
+          )}
         </button>
         {state === "Sign Up" ? (
           <p className="loginSignup-login">

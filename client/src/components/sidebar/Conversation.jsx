@@ -1,15 +1,23 @@
 import React from "react";
-import UserProfile from "../navbar/UserProfile";
+// import UserProfile from "../navbar/UserProfile";
+import useConversation from "../../zustand/useConversation";
 
-const Conversation = () => {
+const Conversation = ({ conversation }) => {
+  const { selectedConversation, setSelectedConversation } = useConversation();
+  const isSelected = selectedConversation?._id === conversation._id;
   return (
-    <div className="user d-flex gap-2 align-items-center p-2">
+    <div
+      className={`user d-flex gap-2 align-items-center p-2 ${
+        isSelected ? "selected-chat" : ""
+      }`}
+      onClick={() => setSelectedConversation(conversation)}
+    >
       <div className="user-image">
-        <UserProfile />
+        <img src={conversation.profilePic} alt="" width={40} height={40} />
         <div className="online-status"></div>
       </div>
       <div className="user-name">
-        <h6>Adarsh</h6>
+        <h6>{conversation.fullName}</h6>
       </div>
     </div>
   );

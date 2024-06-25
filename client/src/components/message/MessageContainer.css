@@ -23,10 +23,23 @@
 }
 
 .chat-bubble {
-  background: rgba(250, 45, 250, 0.568);
+  /* background: rgba(250, 45, 250, 0.568); */
   padding: 5px 15px;
   border-radius: 15px;
   max-width: 60%;
+}
+
+.chat-end {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-direction: row-reverse;
+}
+
+.chat-start {
+  display: flex;
+  align-items: center;
+  gap: 3px;
 }
 
 .message-field input {
@@ -46,10 +59,9 @@
   background: #fff;
   padding: 5px 10px;
   /* top: 10px; */
-
 }
 
-@media screen and (max-width:850px) {
+@media screen and (max-width: 850px) {
   .message-container {
     width: 100%;
   }

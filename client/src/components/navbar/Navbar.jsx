@@ -2,8 +2,11 @@ import React from "react";
 import "./Navbar.css";
 import SearchInput from "./SearchInput";
 import UserProfile from "./UserProfile";
+import { useAuthContext } from "../../context/AuthContext";
 
 const Navbar = () => {
+  const { authUser } = useAuthContext();
+  const user = authUser.user;
   return (
     <div className="navbar d-flex align-items-center justify-content-between">
       <div className="chat-logo">
@@ -15,7 +18,7 @@ const Navbar = () => {
           <i className="fa-solid fa-bell"></i>
         </button>
         <button className="user-profile d-flex gap-2 align-items-center">
-          <UserProfile />
+          <img src={user.profilePic} alt="" width={40} height={40} />
           <i className="fa-solid fa-chevron-down"></i>
         </button>
       </div>

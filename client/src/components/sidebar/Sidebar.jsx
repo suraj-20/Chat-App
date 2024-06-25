@@ -1,7 +1,8 @@
 import React from "react";
 import "./Sidebar.css";
 import Conversations from "./Conversations";
-import SearchInput from "../navbar/SearchInput";
+// import SearchInput from "../navbar/SearchInput";
+import LogoutButton from "./LogoutButton";
 
 const Sidebar = () => {
   return (
@@ -15,6 +16,7 @@ const Sidebar = () => {
       </div>
       <div className="line"></div>
       <Conversations />
+      <LogoutButton />
     </div>
   );
 };

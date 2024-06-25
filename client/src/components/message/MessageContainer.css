@@ -1,0 +1,56 @@
+.main-content {
+  height: 90vh;
+}
+
+.message-container {
+  width: 70%;
+  background: #ffffff;
+  border-radius: 2px;
+}
+
+.message-header {
+  background: #edf2f7;
+  padding: 10px 15px;
+}
+
+.conversation-detail {
+  border: none;
+  padding: 5px 20px;
+}
+
+.messages {
+  height: 82%;
+}
+
+.chat-bubble {
+  background: rgba(250, 45, 250, 0.568);
+  padding: 5px 15px;
+  border-radius: 15px;
+  max-width: 60%;
+}
+
+.message-field input {
+  height: 50px;
+  width: 100%;
+  padding-left: 20px;
+  border: 1px solid #c9c9c9;
+  outline: none;
+  color: #5c5c5c;
+  font-size: 18px;
+}
+
+.message-field button {
+  right: 10px;
+  border: none;
+  font-size: 1.3rem;
+  background: #fff;
+  padding: 5px 10px;
+  /* top: 10px; */
+
+}
+
+@media screen and (max-width:850px) {
+  .message-container {
+    width: 100%;
+  }
+}

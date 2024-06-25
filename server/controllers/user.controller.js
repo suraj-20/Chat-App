@@ -31,8 +31,8 @@ module.exports.signup = async (req, res) => {
     });
 
     if (newUser) {
-      generateTokenAndSetCookie(newUser._id, res);
-      res.status(201).json({ message: "User Signed up successfully", newUser });
+      const token = generateTokenAndSetCookie(newUser._id, res);
+      res.status(201).json({ sucess: true, newUser, token });
     } else {
       res.status(400).json({ error: "Invalid user data." });
     }
@@ -55,9 +55,10 @@ module.exports.login = async (req, res) => {
       return res.status(400).json({ error: "Invalid username or password" });
     }
 
-    generateTokenAndSetCookie(user._id, res);
+    const token = generateTokenAndSetCookie(user._id, res);
+    // console.log(token);
 
-    res.status(200).json({ message: "User logged in successfully", user });
+    res.status(200).json({ sucess: true, user, token });
   } catch (error) {
     console.log("Error in user login: ", error.message);
     res.status(500).json({ error: "Internal Server Error" });
@@ -67,7 +68,7 @@ module.exports.login = async (req, res) => {
 module.exports.logout = async (req, res) => {
   try {
     res.cookie("jwt", "", { maxAge: 0 });
-    res.status(200).json({ message: "Logged out successfully" });
+    res.status(200).json({ sucess: true });
   } catch (error) {
     console.log("Error in user logout:", error.message);
     res.status(500).json({ error: "Internal Server Error" });

@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
 const PORT = process.env.PORT || 5000;
 
@@ -19,7 +20,7 @@ app.get("/", (req, res) => {
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(express.json());
-// app.use(cors());
+app.use(cors());
 
 app.use("/api/auth", userRoutes);
 app.use("/api/messages", messageRoutes);

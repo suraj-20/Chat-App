@@ -6,7 +6,7 @@ import MessageInput from "./MessageInput";
 import useConversation from "../../zustand/useConversation";
 import { useAuthContext } from "../../context/AuthContext";
 
-const MessageContainer = () => {
+const MessageContainer = ({ handlePopup }) => {
   const { selectedConversation, setSelectedConversation } = useConversation();
   // console.log(selectedConversation);
 
@@ -32,7 +32,10 @@ const MessageContainer = () => {
               <span>{selectedConversation.fullName}</span>
             </div>
             <div className="conversation-details">
-              <button className="conversation-detail">
+              <button
+                onClick={() => handlePopup("conversation")}
+                className="conversation-detail"
+              >
                 <i className="fa-solid fa-eye"></i>
               </button>
             </div>
@@ -53,9 +56,7 @@ const NoChatSelected = () => {
   return (
     <div className="d-flex align-items-center justify-content-center w-100 h-100">
       <div className="px-4 text-center d-flex align-items-center flex-column gap-2">
-        <p style={{ fontSize: "1.5rem" }}>
-          Welcome 👋 {authUser.fullName} *
-        </p>
+        <p style={{ fontSize: "1.5rem" }}>Welcome 👋 {authUser.fullName} *</p>
         <p style={{ fontSize: "2rem" }}>Select a chat to start messaging</p>
         <i style={{ fontSize: "2rem" }} className="fa-solid fa-message"></i>
       </div>

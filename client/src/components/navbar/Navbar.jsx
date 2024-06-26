@@ -3,10 +3,12 @@ import "./Navbar.css";
 import SearchInput from "./SearchInput";
 // import UserProfile from "./UserProfile";
 import { useAuthContext } from "../../context/AuthContext";
+// import LoggedInProfile from "../popups/LoggedInProfile";
 
-const Navbar = () => {
+const Navbar = ({ handlePopup }) => {
   const { authUser } = useAuthContext();
   const user = authUser;
+
   return (
     <div className="navbar d-flex align-items-center justify-content-between">
       <div className="chat-logo">
@@ -19,7 +21,11 @@ const Navbar = () => {
         <button className="notification">
           <i className="fa-solid fa-bell"></i>
         </button>
-        <button className="user-profile d-flex gap-2 align-items-center">
+        <button
+          onClick={() => handlePopup("profile")}
+          type="submit"
+          className="user-profile d-flex gap-2 align-items-center"
+        >
           <img src={user.profilePic} alt="" width={40} height={40} />
           <i className="fa-solid fa-chevron-down"></i>
         </button>

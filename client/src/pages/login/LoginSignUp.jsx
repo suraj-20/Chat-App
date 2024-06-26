@@ -30,38 +30,6 @@ const LoginSignUp = () => {
     await login(formData);
   };
 
-  // const login = async () => {
-  //   console.log("User logged in", formData);
-  //   try {
-  //     const response = await axios.post(
-  //       "${process.env.REACT_APP_BASE_URL}/api/auth/login",
-  //       formData,
-  //       {
-  //         headers: {
-  //           Accept: "application/json",
-  //           "Content-Type": "application/json",
-  //         },
-  //       }
-  //     );
-
-  //     const responseData = response.data;
-  //     console.log(responseData.token);
-
-  //     if (responseData) {
-  //       localStorage.setItem("jwt", responseData.token);
-  //       alert("User logged in successfully");
-  //       navigate("/");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error in user login: ", error.message);
-  //     if (error.response && error.response.data) {
-  //       alert(error.response.data.message);
-  //     } else {
-  //       alert("An error occurred during login.");
-  //     }
-  //   }
-  // };
-
   return (
     <div className="loginSignup d-flex">
       <div className="loginSignup-container">

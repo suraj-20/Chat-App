@@ -32,7 +32,15 @@ module.exports.signup = async (req, res) => {
 
     if (newUser) {
       const token = generateTokenAndSetCookie(newUser._id, res);
-      res.status(201).json({ sucess: true, newUser, token });
+      res.status(201).json({
+        sucess: true,
+        _id: newUser._id,
+        fullName: newUser.fullName,
+        username: newUser.username,
+        profilePic: newUser.profilePic,
+        gender: newUser.gender,
+        token,
+      });
     } else {
       res.status(400).json({ error: "Invalid user data." });
     }
@@ -58,7 +66,15 @@ module.exports.login = async (req, res) => {
     const token = generateTokenAndSetCookie(user._id, res);
     // console.log(token);
 
-    res.status(200).json({ sucess: true, user, token });
+    res.status(200).json({
+      sucess: true,
+      _id: user._id,
+      fullName: user.fullName,
+      username: user.username,
+      profilePic: user.profilePic,
+      gender: user.gender,
+      token,
+    });
   } catch (error) {
     console.log("Error in user login: ", error.message);
     res.status(500).json({ error: "Internal Server Error" });

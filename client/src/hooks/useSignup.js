@@ -30,7 +30,7 @@ const useSignup = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/auth/signup",
+        "${process.env.REACT_APP_BASE_URL}/api/auth/signup",
         {
           fullName,
           username,

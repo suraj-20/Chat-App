@@ -13,8 +13,9 @@ const useGetMessages = () => {
     const getMessages = async () => {
       setLoading(true);
       try {
+        console.log(process.env.REACT_APP_BASE_URL);
         const res = await fetch(
-          `http://localhost:8000/api/messages/${selectedConversation._id}`,
+          `${process.env.REACT_APP_BASE_URL}/api/messages/${selectedConversation._id}`,
           {
             method: "GET",
             headers: {

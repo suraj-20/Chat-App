@@ -12,7 +12,7 @@ const useGetConversation = () => {
       setLoading(true);
 
       try {
-        const response = await fetch(`http://localhost:8000/api/auth/user`, {
+        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/user`, {
           headers: {
             Authorization: `${authUser.token}`,
           },

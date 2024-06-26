@@ -9,7 +9,7 @@ const useLogout = () => {
   const logout = async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:8000/api/auth/logout", {
+      const res = await fetch("${process.env.REACT_APP_BASE_URL}/api/auth/logout", {
         method: "POST",
         headers: {
           "Contect-Type": "application/json",

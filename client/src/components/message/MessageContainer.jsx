@@ -4,6 +4,7 @@ import "./MessageContainer.css";
 import Messages from "./Messages";
 import MessageInput from "./MessageInput";
 import useConversation from "../../zustand/useConversation";
+import { useAuthContext } from "../../context/AuthContext";
 
 const MessageContainer = () => {
   const { selectedConversation, setSelectedConversation } = useConversation();
@@ -48,10 +49,13 @@ const MessageContainer = () => {
 export default MessageContainer;
 
 const NoChatSelected = () => {
+  const { authUser } = useAuthContext();
   return (
     <div className="d-flex align-items-center justify-content-center w-100 h-100">
       <div className="px-4 text-center d-flex align-items-center flex-column gap-2">
-        <p style={{ fontSize: "1.5rem" }}>Welcome 👋 John Doe *</p>
+        <p style={{ fontSize: "1.5rem" }}>
+          Welcome 👋 {authUser.fullName} *
+        </p>
         <p style={{ fontSize: "2rem" }}>Select a chat to start messaging</p>
         <i style={{ fontSize: "2rem" }} className="fa-solid fa-message"></i>
       </div>

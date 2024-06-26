@@ -7,7 +7,7 @@ const useSendMessage = () => {
   const { authUser } = useAuthContext();
   // console.log(authUser.token);
   const [loading, setLoading] = useState();
-  const { message, setMessage, selectedConversation } = useConversation();
+  const { messages, setMessages, selectedConversation } = useConversation();
 
   const sendMessage = async (message) => {
     setLoading(true);
@@ -25,18 +25,18 @@ const useSendMessage = () => {
       );
 
       const data = await res.json();
-      console.log(data);
+      // console.log(data);
 
       if (data.error) throw new Error(data.error);
 
-      setMessage([...message, data]);
+      setMessages([...messages, data]);
     } catch (error) {
       toast.error(error.message);
     } finally {
       setLoading(false);
     }
   };
-  return { loading, sendMessage };
+  return { sendMessage, loading };
 };
 
 export default useSendMessage;

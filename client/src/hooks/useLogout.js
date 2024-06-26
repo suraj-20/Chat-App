@@ -4,7 +4,7 @@ import { useAuthContext } from "../context/AuthContext";
 
 const useLogout = () => {
   const [loading, setLoading] = useState(false);
-  const { setAuthUser } = useAuthContext();
+  const { setauthUser } = useAuthContext();
 
   const logout = async () => {
     setLoading(true);
@@ -23,7 +23,7 @@ const useLogout = () => {
       }
 
       localStorage.removeItem("user-auth");
-      setAuthUser(null);
+      setauthUser(null);
     } catch (error) {
       toast.error(error.message);
     } finally {

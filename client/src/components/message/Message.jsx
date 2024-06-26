@@ -9,18 +9,20 @@ const Message = ({ message }) => {
   // console.log(authUser);
   // console.log(message);
   const { selectedConversation } = useConversation();
-  const fromMe = message.senderId === authUser.user?._id && authUser.user._id;
-  // console.log(message.senderId, authUser.newUser?._id || authUser.user?._id);
-  console.log(fromMe);
+  const fromMe = message.senderId === authUser._id;
+  // console.log(message.senderId, authUser._id);
+  // console.log("fromMe", fromMe);
   const chatClassName = fromMe ? "chat-end" : "chat-start";
   const profilePic = fromMe
-    ? authUser.newUser?.profilePic || authUser.user?.profilePic
+    ? authUser?.profilePic
     : selectedConversation.profilePic;
   const bubbleBgColor = fromMe
     ? "rgba(250, 45, 250, 0.568)"
     : "rgba(232, 231, 232, 0.568)";
 
-  const fomatedTime = extractTime(message.createdAt);
+  const fomatedTime = extractTime(
+    message.createdAt || message.newMessage.createdAt
+  );
 
   return (
     <>
@@ -29,7 +31,7 @@ const Message = ({ message }) => {
           <img src={profilePic} alt="" width={40} height={40} />
         </div>
         <div className="chat-bubble" style={{ background: `${bubbleBgColor}` }}>
-          {message.message}
+          {message.message || message.newMessage.message}
         </div>
         <div className="chat-footer opacity-50 d-flex gap-1 align-items-center">
           {fomatedTime}

@@ -1,10 +1,23 @@
 import React from "react";
 // import UserProfile from "../navbar/UserProfile";
 import useConversation from "../../zustand/useConversation";
+import { useSocketContext } from "../../context/SocketContext";
 
 const Conversation = ({ conversation }) => {
   const { selectedConversation, setSelectedConversation } = useConversation();
   const isSelected = selectedConversation?._id === conversation._id;
+
+  const { onlineUsers } = useSocketContext();
+  // console.log(onlineUsers);
+  const isOnline = onlineUsers.includes(conversation._id);
+
+  // if (conversation) {
+  //   const isOnline = onlineUsers.includes(conversation._id);
+  //   console.log(isOnline); // true
+  // } else {
+  //   console.log('Conversation not found');
+  // }
+
   return (
     <div
       className={`user d-flex gap-2 align-items-center p-2 ${
@@ -14,7 +27,7 @@ const Conversation = ({ conversation }) => {
     >
       <div className="user-image">
         <img src={conversation.profilePic} alt="" width={40} height={40} />
-        <div className="online-status"></div>
+        <div className={`${isOnline ? "online-status" : ""}`}></div>
       </div>
       <div className="user-name">
         <h6>{conversation.fullName}</h6>

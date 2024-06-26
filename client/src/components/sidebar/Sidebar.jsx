@@ -1,7 +1,7 @@
 import React from "react";
 import "./Sidebar.css";
 import Conversations from "./Conversations";
-// import SearchInput from "../navbar/SearchInput";
+import SearchInput from "../navbar/SearchInput";
 import LogoutButton from "./LogoutButton";
 
 const Sidebar = () => {
@@ -15,6 +15,9 @@ const Sidebar = () => {
         </button>
       </div>
       <div className="line"></div>
+      <div className="d-lg-none d-flex search-container">
+        <SearchInput />
+      </div>
       <Conversations />
       <LogoutButton />
     </div>

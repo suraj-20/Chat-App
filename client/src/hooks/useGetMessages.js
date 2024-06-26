@@ -7,7 +7,7 @@ const useGetMessages = () => {
   const { authUser } = useAuthContext();
   //   console.log(authUser.token);
   const [loading, setLoading] = useState();
-  const { message, setMessage, selectedConversation } = useConversation();
+  const { messages, setMessages, selectedConversation } = useConversation();
 
   useEffect(() => {
     const getMessages = async () => {
@@ -25,11 +25,11 @@ const useGetMessages = () => {
         );
 
         const data = await res.json();
-        console.log(data);
+        // console.log(data);
 
         if (data.error) throw new Error(data.error);
 
-        setMessage(data);
+        setMessages(data);
       } catch (error) {
         toast.error(error.message);
       } finally {
@@ -38,8 +38,8 @@ const useGetMessages = () => {
     };
 
     if (selectedConversation?._id) getMessages();
-  }, [selectedConversation?._id, setMessage]);
-  return { loading, message };
+  }, [selectedConversation?._id, setMessages]);
+  return { messages, loading };
 };
 
 export default useGetMessages;

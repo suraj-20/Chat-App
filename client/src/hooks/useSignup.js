@@ -7,7 +7,7 @@ import { useAuthContext } from "../context/AuthContext";
 const useSignup = () => {
   //   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const { setAuthUser } = useAuthContext();
+  const { setauthUser } = useAuthContext();
 
   const signup = async ({
     fullName,
@@ -54,7 +54,7 @@ const useSignup = () => {
       }
 
       localStorage.setItem("user-auth", JSON.stringify(responseData));
-      setAuthUser(responseData);
+      setauthUser(responseData);
 
       //   if (responseData.success) {
       //     localStorage.setItem("jwt", responseData.token);

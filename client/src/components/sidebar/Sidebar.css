@@ -49,6 +49,10 @@
   background: rgba(59, 217, 244, 0.856);
 }
 
+.search-container {
+  width: 100%;
+}
+
 @media screen and (max-width: 998px) {
   .chat-heading h4 {
     font-size: 1rem;

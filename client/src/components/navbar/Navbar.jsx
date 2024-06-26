@@ -1,18 +1,20 @@
 import React from "react";
 import "./Navbar.css";
 import SearchInput from "./SearchInput";
-import UserProfile from "./UserProfile";
+// import UserProfile from "./UserProfile";
 import { useAuthContext } from "../../context/AuthContext";
 
 const Navbar = () => {
   const { authUser } = useAuthContext();
-  const user = authUser.user;
+  const user = authUser;
   return (
     <div className="navbar d-flex align-items-center justify-content-between">
       <div className="chat-logo">
         <h4>Chat-App</h4>
       </div>
-      <SearchInput />
+      <div className="d-lg-flex d-none">
+        <SearchInput />
+      </div>
       <div className=" d-flex gap-2">
         <button className="notification">
           <i className="fa-solid fa-bell"></i>

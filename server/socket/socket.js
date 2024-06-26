@@ -6,9 +6,9 @@ const app = express();
 
 const server = http.createServer(app);
 const io = new Server(server, {
+  pingTimeout: 60000,
   cors: {
-    origin: ["https://chat-app-vert-eta.vercel.app/"],
-    methods: ["GET", "POST"],
+    origin: process.env.URL,
   },
 });
 

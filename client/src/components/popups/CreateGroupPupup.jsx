@@ -6,11 +6,11 @@ const CreateGroupPupup = ({ popup, onClose }) => {
   }
   return (
     <div className="popup-overlay">
-      <div className="popup-container">
+      <div className="popup-container creategroup-popup-container">
         <button className="close-button" onClick={onClose}>
           <i className="fa-solid fa-xmark"></i>
         </button>
-        <div className="popup-content d-flex flex-column justify-content-between gap-4">
+        <div className="popup-content creategroup-popup-content d-flex flex-column justify-content-between gap-4">
           <div className="popup-heading">
             <h2>Create Group Chat</h2>
           </div>

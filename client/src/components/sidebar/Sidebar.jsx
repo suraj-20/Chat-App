@@ -4,12 +4,15 @@ import Conversations from "./Conversations";
 import SearchInput from "../navbar/SearchInput";
 import LogoutButton from "./LogoutButton";
 
-const Sidebar = ({ handlePopup }) => {
+const Sidebar = ({ handlePopup, handleConversationSelect, className }) => {
   return (
-    <div className="sidebar d-flex gap-4 p-3">
+    <div className={`sidebar gap-4 p-3 ${className}`}>
       <div className="chat-heading d-flex align-items-center justify-content-between">
         <h4>Chat</h4>
-        <button onClick={() => handlePopup("groupchat")} className="create-group d-flex align-items-center gap-2">
+        <button
+          onClick={() => handlePopup("groupchat")}
+          className="create-group d-flex align-items-center gap-2"
+        >
           <h6 className="d-lg-flex d-none">New Group Chat </h6>{" "}
           <i className="fa-solid fa-plus"></i>
         </button>
@@ -18,7 +21,7 @@ const Sidebar = ({ handlePopup }) => {
       <div className="d-lg-none d-flex search-container">
         <SearchInput />
       </div>
-      <Conversations />
+      <Conversations handleConversationSelect={handleConversationSelect} />
       <LogoutButton />
     </div>
   );

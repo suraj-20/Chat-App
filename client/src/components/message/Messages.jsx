@@ -15,7 +15,7 @@ const Messages = () => {
     }, 100);
   }, [messages]);
   return (
-    <div className="messages py-3 px-2 d-flex flex-column gap-3 overflow-auto h-80">
+    <div className="messages py-3 px-2 d-flex flex-column gap-1 overflow-auto h-80">
       {!loading &&
         messages.length > 0 &&
         messages.map((message) => (

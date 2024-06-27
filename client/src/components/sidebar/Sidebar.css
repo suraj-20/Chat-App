@@ -3,6 +3,7 @@
   border-radius: 2px;
   min-height: 100%;
   background: #fff;
+  display: flex;
   flex-direction: column;
 }
 
@@ -54,16 +55,17 @@
 }
 
 @media screen and (max-width: 998px) {
-  .chat-heading h4 {
-    font-size: 1rem;
-  }
   .create-group h6 {
     font-size: 0.8rem;
   }
 }
 
-@media screen and (max-width: 850px) {
+@media screen and (max-width: 800px) {
   .sidebar {
     display: none;
+  }
+  .sidebar.visible {
+    width: 100%;
+    display: flex;
   }
 }

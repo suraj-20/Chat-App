@@ -61,8 +61,48 @@
   /* top: 10px; */
 }
 
-@media screen and (max-width: 850px) {
+.chat-footer span {
+  font-size: 0.8rem;
+}
+
+.back-button {
+  cursor: pointer;
+  right: 10px;
+  border: none;
+  font-size: 1.3rem;
+  /* background: #fff; */
+  padding: 5px 10px;
+}
+
+@media screen and (max-width: 1300px) {
+  .chat-end {
+    right: -10px;
+  }
+}
+
+@media screen and (max-width: 800px) {
   .message-container {
+    display: block;
     width: 100%;
+  }
+  .message-container.hidden {
+    display: none;
+  }
+
+  .chat-end {
+    right: 0;
+  }
+
+  .chat-bubble {
+    font-size: 0.8rem;
+  }
+
+  .chat-footer {
+    font-size: 0.7rem;
+  }
+
+  .chat-image img {
+    width: 30px;
+    height: 30px;
   }
 }

@@ -6,7 +6,7 @@ import MessageInput from "./MessageInput";
 import useConversation from "../../zustand/useConversation";
 import { useAuthContext } from "../../context/AuthContext";
 
-const MessageContainer = ({ handlePopup }) => {
+const MessageContainer = ({ handlePopup, onBack, className }) => {
   const { selectedConversation, setSelectedConversation } = useConversation();
   // console.log(selectedConversation);
 
@@ -16,13 +16,16 @@ const MessageContainer = ({ handlePopup }) => {
   }, [setSelectedConversation]);
   // const noChatSelected = false;
   return (
-    <div className="message-container p-3">
+    <div className={`message-container p-3 ${className}`}>
       {!selectedConversation ? (
         <NoChatSelected />
       ) : (
         <>
           <div className="message-header d-flex gap-3 align-items-center justify-content-between">
-            <div className="conversation d-flex align-items-center gap-3">
+            <div className="d-lg-none back-button" onClick={onBack}>
+              <i className="fa-solid fa-arrow-left"></i>
+            </div>
+            <div className="conversation d-flex align-items-center gap-2">
               <img
                 src={selectedConversation.profilePic}
                 alt=""

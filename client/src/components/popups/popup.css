@@ -13,7 +13,7 @@
 
 .popup-container {
   background: white;
-  width: 60%;
+  width: 45%;
   height: 60%;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -42,9 +42,38 @@
   padding: 20px;
   text-align: center;
   overflow-y: auto;
+  width: 70%;
   /* flex-grow: 1; */
 }
 
 .create-btn {
   width: 100%;
+}
+
+@media screen and (max-width: 800px) {
+  .popup-container {
+    width: 80%;
+    /* height: 80%; */
+  }
+
+  .close-button {
+    width: 25px;
+    height: 25px;
+  }
+
+  .popup-content {
+    width: 80%;
+  }
+
+  .creategroup-popup-container {
+    width: 90%;
+  }
+
+  .creategroup-popup-content {
+    width: 90%;
+  }
+
+  .creategroup-popup-content .popup-heading h2{
+    font-size: 1.3rem;
+  }
 }

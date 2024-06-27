@@ -26,16 +26,16 @@ const Message = ({ message }) => {
 
   return (
     <>
-      <div className={`chat ${chatClassName} gap-3`}>
+      <div className={`chat ${chatClassName} gap-2`}>
         <div className="chat-image avatar">
           <img src={profilePic} alt="" width={40} height={40} />
         </div>
         <div className="chat-bubble" style={{ background: `${bubbleBgColor}` }}>
           {message.message || message.newMessage.message}
         </div>
-        <div className="chat-footer opacity-50 d-flex gap-1 align-items-center">
-          {fomatedTime}
-        </div>
+      </div>
+      <div className={`chat-footer  opacity-50`}>
+        <span className={`${chatClassName}`}>{fomatedTime}</span>
       </div>
     </>
   );

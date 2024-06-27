@@ -1,8 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import Message from "./Message";
 import useGetMessages from "../../hooks/useGetMessages";
-import Skeleton from "react-loading-skeleton";
+// import Skeleton from "react-loading-skeleton";
 import useListenMessage from "../../hooks/useListenMessage";
+// import Animations from "../animations/Skeleton";
+import { Skeleton } from "@mui/material";
 
 const Messages = () => {
   const { messages, loading } = useGetMessages();
@@ -16,6 +18,7 @@ const Messages = () => {
   }, [messages]);
   return (
     <div className="messages py-3 px-2 d-flex flex-column gap-1 overflow-auto h-80">
+      {loading && [...Array(3)].map((_, idx) => <Skeleton key={idx} />)}
       {!loading &&
         messages.length > 0 &&
         messages.map((message) => (
@@ -23,8 +26,6 @@ const Messages = () => {
             <Message message={message} />
           </div>
         ))}
-
-      {loading && [...Array(3).map((_, idx) => <Skeleton key={idx} />)]}
 
       {!loading && messages.length === 0 && (
         <p className="text-center">Send a message to start conversation.</p>

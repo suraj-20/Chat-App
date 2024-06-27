@@ -1,5 +1,6 @@
 const Conversation = require("../models/conversation.model");
 const Message = require("../models/message.model");
+const User = require("../models/user.model");
 const { getReceiverSocketId, io } = require("../socket/socket");
 
 module.exports.sendMessage = async (req, res) => {
@@ -8,15 +9,58 @@ module.exports.sendMessage = async (req, res) => {
     const { id: receiverId } = req.params;
     const senderId = req.user._id;
 
-    let conversation = await Conversation.findOne({
-      participants: { $all: [senderId, receiverId] },
-    });
+    let conversation;
+    if (receiverId.length === 24) {
+      const isUser = await User.findById(receiverId);
+      if (isUser) {
+        conversation = await Conversation.findOne({
+          participants: { $all: [senderId, receiverId] },
+          isGroupChat: false,
+        });
+
+        if (!conversation) {
+          conversation = await Conversation.create({
+            participants: [senderId, receiverId],
+            isGroupChat: false,
+          });
+        }
+      }
+    }
 
     if (!conversation) {
-      conversation = await Conversation.create({
-        participants: [senderId, receiverId],
+      conversation = await Conversation.findOne({
+        _id: receiverId,
+        participants: senderId,
+        isGroupChat: true,
       });
+
+      if (!conversation) {
+        const { groupParticipants } = req.body;
+
+        if (
+          !groupParticipants ||
+          !Array.isArray(groupParticipants) ||
+          groupParticipants.length < 2
+        ) {
+          return res.status(400).json({ error: "Invalid group participants." });
+        }
+
+        conversation = await Conversation.create({
+          participants: [senderId, ...groupParticipants],
+          isGroupChat: true,
+        });
+      }
     }
+
+    // let conversation = await Conversation.findOne({
+    //   participants: { $all: [senderId, receiverId] },
+    // });
+
+    // if (!conversation) {
+    //   conversation = await Conversation.create({
+    //     participants: [senderId, receiverId],
+    //   });
+    // }
 
     const newMessage = new Message({
       senderId,
@@ -30,9 +74,20 @@ module.exports.sendMessage = async (req, res) => {
 
     await Promise.all([conversation.save(), newMessage.save()]);
 
-    const receiverSocketId = getReceiverSocketId(receiverId);
-    if (receiverSocketId) {
-      io.to(receiverSocketId).emit("newMessage", newMessage);
+    if (conversation.isGroupChat) {
+      conversation.participants.forEach((participantId) => {
+        if (participantId.toString() !== senderId.toString()) {
+          const receiverSocketId = getReceiverSocketId(participantId);
+          if (receiverSocketId) {
+            io.to(receiverSocketId).emit("newMessage", newMessage);
+          }
+        }
+      });
+    } else {
+      const receiverSocketId = getReceiverSocketId(receiverId);
+      if (receiverSocketId) {
+        io.to(receiverSocketId).emit("newMessage", newMessage);
+      }
     }
 
     res.status(201).json(newMessage);
@@ -44,12 +99,27 @@ module.exports.sendMessage = async (req, res) => {
 
 module.exports.getMessages = async (req, res) => {
   try {
-    const { id: userToChatId } = req.params;
-    const senderId = req.user._id;
+    const { id: chatId } = req.params;
+    const userId = req.user._id;
 
-    const conversation = await Conversation.findOne({
-      participants: { $all: [senderId, userToChatId] },
-    }).populate("messages");
+    let conversation;
+
+    conversation = await Conversation.findOne({
+      _id: chatId,
+      participants: userId,
+    }).populate({
+      path: "messages",
+      populate: { path: "senderId", select: "username" },
+    });
+
+    if (conversation && conversation.isGroupChat) {
+      conversation = await conversation.populate("participants", "username");
+    } else {
+      conversation = await Conversation.findOne({
+        participants: { $all: [userId, chatId] },
+        isGroupChat: false,
+      }).populate("messages");
+    }
 
     if (!conversation) return res.status(200).json([]);
 

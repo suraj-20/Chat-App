@@ -1,6 +1,8 @@
 const { Server } = require("socket.io");
 const http = require("http");
 const express = require("express");
+const Message = require("../models/message.model");
+const Conversation = require("../models/conversation.model");
 
 const app = express();
 
@@ -8,6 +10,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   pingTimeout: 60000,
   cors: {
+    // origin: ["http://localhost:3000"],
     origin: process.env.URL,
   },
 });
@@ -25,6 +28,34 @@ io.on("connection", (socket) => {
   if (userId != "undefined") userSocketMap[userId] = socket.id;
 
   io.emit("getOnlineUsers", Object.keys(userSocketMap));
+
+  socket.on("joinGroup", ({ groupId }) => {
+    socket.join(groupId);
+    console.log(`User ${socket.id} joined group ${groupId}`);
+  });
+
+  socket.on("sendMessage", async ({ conversationId, senderId, message }) => {
+    try {
+      const newMessage = new Message({
+        senderId,
+        receiverId: conversationId,
+        message,
+      });
+      await newMessage.save();
+
+      const conversation = await Conversation.findByIdAndUpdate(
+        conversationId,
+        { $push: { message: newMessage._id } },
+        { new: true }
+      );
+
+      await conversation.save();
+
+      io.to(conversationId).emit("newMessage", newMessage);
+    } catch (error) {
+      console.log("Error in sendMessage: ", error.message);
+    }
+  });
 
   socket.on("disconnect", () => {
     console.log("User disconnected", socket.id);

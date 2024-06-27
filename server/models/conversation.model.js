@@ -2,6 +2,9 @@ const mongoose = require("mongoose");
 
 const conversationSchema = new mongoose.Schema(
   {
+    name: {
+      type: String,
+    },
     participants: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -15,6 +18,10 @@ const conversationSchema = new mongoose.Schema(
         default: [],
       },
     ],
+    isGroupChat: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

@@ -10,8 +10,9 @@ const server = http.createServer(app);
 const io = new Server(server, {
   pingTimeout: 60000,
   cors: {
-    // origin: ["http://localhost:3000"],
     origin: process.env.URL,
+    methods: ["GET", "POST", "DELETE", "PUT"],
+    // origin: process.env.URL,
   },
 });
 

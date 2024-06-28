@@ -20,7 +20,12 @@ app.get("/", (req, res) => {
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.URL, // Allow requests from this origin
+    methods: ["GET", "POST", "DELETE", "PUT"], // Allow these HTTP methods
+  })
+);
 
 app.use("/api/auth", userRoutes);
 app.use("/api/messages", messageRoutes);

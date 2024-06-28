@@ -8,17 +8,17 @@ const Home = ({ handlePopup }) => {
   const [isSidebarVisible, setIsSidebarVisible] = useState(true);
 
   const handleConversationSelect = () => {
-    console.log("Before setting state:", isSidebarVisible);
+    // console.log("Before setting state:", isSidebarVisible);
     setIsSidebarVisible(false);
-    console.log("after setting state:", isSidebarVisible);
+    // console.log("after setting state:", isSidebarVisible);
   };
 
   // console.log(handleConversationSelect);
 
   const handleBackToSidebar = () => {
-    console.log("Before setting state:", isSidebarVisible);
+    // console.log("Before setting state:", isSidebarVisible);
     setIsSidebarVisible(true);
-    console.log("after setting state:", isSidebarVisible);
+    // console.log("after setting state:", isSidebarVisible);
   };
 
   return (

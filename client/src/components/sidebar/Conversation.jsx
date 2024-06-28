@@ -2,21 +2,22 @@ import React from "react";
 // import UserProfile from "../navbar/UserProfile";
 import useConversation from "../../zustand/useConversation";
 import { useSocketContext } from "../../context/SocketContext";
+import { useAuthContext } from "../../context/AuthContext";
+// const groupProfile = "https://avatar.iran.liara.run/public";
 
 const Conversation = ({ conversation }) => {
   const { selectedConversation, setSelectedConversation } = useConversation();
   const isSelected = selectedConversation?._id === conversation._id;
 
+  const { authUser } = useAuthContext();
   const { onlineUsers } = useSocketContext();
-  // console.log(onlineUsers);
   const isOnline = onlineUsers.includes(conversation._id);
 
-  // if (conversation) {
-  //   const isOnline = onlineUsers.includes(conversation._id);
-  //   console.log(isOnline); // true
-  // } else {
-  //   console.log('Conversation not found');
-  // }
+  const isGroupChat = conversation.isGroupChat;
+  const displayName = isGroupChat ? conversation.name : conversation.fullName;
+  const profilePic = isGroupChat
+    ? authUser.profilePic
+    : conversation.profilePic;
 
   return (
     <div
@@ -26,11 +27,11 @@ const Conversation = ({ conversation }) => {
       onClick={() => setSelectedConversation(conversation)}
     >
       <div className="user-image">
-        <img src={conversation.profilePic} alt="" width={40} height={40} />
+        <img src={profilePic} alt="" width={40} height={40} />
         <div className={`${isOnline ? "online-status" : ""}`}></div>
       </div>
       <div className="user-name">
-        <h6>{conversation.fullName}</h6>
+        <h6>{displayName}</h6>
       </div>
     </div>
   );

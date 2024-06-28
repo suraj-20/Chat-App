@@ -5,16 +5,21 @@ import Messages from "./Messages";
 import MessageInput from "./MessageInput";
 import useConversation from "../../zustand/useConversation";
 import { useAuthContext } from "../../context/AuthContext";
+import useCreate from "../../hooks/useCreateGroup";
 
 const MessageContainer = ({ handlePopup, onBack, className }) => {
   const { selectedConversation, setSelectedConversation } = useConversation();
-  // console.log(selectedConversation);
+  console.log(selectedConversation);
+  const { authUser } = useAuthContext();
 
   useEffect(() => {
     // Cleanup function
     return () => setSelectedConversation(null);
   }, [setSelectedConversation]);
   // const noChatSelected = false;
+
+  // const isGroupChat = selectedConversation.isGroupChat;
+  // const profilePic = selectedConversation.participants[0]?.profilePic;
   return (
     <div className={`message-container p-3 ${className}`}>
       {!selectedConversation ? (
@@ -27,12 +32,14 @@ const MessageContainer = ({ handlePopup, onBack, className }) => {
             </div>
             <div className="conversation d-flex align-items-center gap-2">
               <img
-                src={selectedConversation.profilePic}
+                src={selectedConversation.profilePic || authUser.profilePic}
                 alt=""
                 width={40}
                 height={40}
               />
-              <span>{selectedConversation.fullName}</span>
+              <span>
+                {selectedConversation.fullName || selectedConversation.name}
+              </span>
             </div>
             <div className="conversation-details">
               <button

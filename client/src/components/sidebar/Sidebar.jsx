@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Sidebar.css";
 import Conversations from "./Conversations";
 import SearchInput from "../navbar/SearchInput";
 import LogoutButton from "./LogoutButton";
 
 const Sidebar = ({ handlePopup, handleConversationSelect, className }) => {
+  
   return (
     <div className={`sidebar gap-4 p-3 ${className}`}>
       <div className="chat-heading d-flex align-items-center justify-content-between">

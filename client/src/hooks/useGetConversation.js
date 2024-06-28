@@ -6,23 +6,28 @@ const useGetConversation = () => {
   const { authUser } = useAuthContext();
   const [loading, setLoading] = useState(false);
   const [conversations, setConversations] = useState([]);
+  const [groupConversations, setGroupConversations] = useState([]);
 
   useEffect(() => {
     const getConversation = async () => {
       setLoading(true);
 
       try {
-        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/user`, {
-          headers: {
-            Authorization: `${authUser.token}`,
-          },
-        });
+        const response = await fetch(
+          `${process.env.REACT_APP_BASE_URL}/api/auth/user`,
+          {
+            headers: {
+              Authorization: `${authUser.token}`,
+            },
+          }
+        );
         const responseData = await response.json();
         // console.log(responseData);
         if (responseData.error) {
           throw new Error(responseData.error);
         }
-        setConversations(responseData);
+        setConversations(responseData.filteredUsers);
+        setGroupConversations(responseData.groupConversations);
       } catch (error) {
         toast.error(error.message);
       } finally {
@@ -32,7 +37,7 @@ const useGetConversation = () => {
     getConversation();
   }, []);
 
-  return { loading, conversations };
+  return { loading, conversations, groupConversations };
 };
 
 export default useGetConversation;

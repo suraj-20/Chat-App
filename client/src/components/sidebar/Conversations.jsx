@@ -1,13 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Conversation from "./Conversation";
 import useGetConversation from "../../hooks/useGetConversation";
 
 const Conversations = ({ handleConversationSelect }) => {
-  const { loading, conversations } = useGetConversation();
-  // console.log(conversations);
+  const { loading, conversations, groupConversations } = useGetConversation();
+  const [allConversations, setAllConversations] = useState([]);
+
+  useEffect(() => {
+    if (!loading) {
+      setAllConversations([...conversations, ...groupConversations]);
+    }
+  }, [loading, conversations, groupConversations]);
+
   return (
     <div className="all-users d-flex flex-column gap-2 overflow-auto">
-      {conversations.map((conversation) => (
+      {allConversations.map((conversation) => (
         <div key={conversation._id} onClick={handleConversationSelect}>
           <Conversation conversation={conversation} />
         </div>

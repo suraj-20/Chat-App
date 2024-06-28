@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/user.model");
 const generateTokenAndSetCookie = require("../utils/generateToken");
+const Conversation = require("../models/conversation.model");
 
 module.exports.signup = async (req, res) => {
   try {
@@ -99,7 +100,31 @@ module.exports.getAllUsers = async (req, res) => {
       _id: { $ne: loggedInUserId },
     }).select("-password");
 
-    res.status(200).json(filteredUsers);
+    const groupConversations = await Conversation.find({
+      participants: loggedInUserId,
+      isGroupChat: true,
+    })
+      .populate("participants", "username fullName profilePic")
+      .select("name participants isGroupChat");
+
+    // console.log({ users: filteredUsers, groups: groupConversations });
+
+    res.status(200).json({ filteredUsers, groupConversations });
+  } catch (error) {
+    console.log("Error in getting user: ", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+module.exports.getSearchedUser = async (req, res) => {
+  const { query } = req.query;
+
+  try {
+    const users = await User.find({
+      username: { $regex: query, $options: "i" },
+    }).select("username _id");
+
+    res.status(200).json({ users });
   } catch (error) {
     console.log("Error in getting user: ", error.message);
     res.status(500).json({ error: "Internal Server Error" });

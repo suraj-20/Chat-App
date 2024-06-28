@@ -25,47 +25,96 @@ const createGroup = async (req, res) => {
       { $push: { group: group._id } }
     );
 
-    res.status(201).json(group);
+    const populateGroup = await group.populate(
+      "participants",
+      "username fullName profilePic"
+    );
+
+    res.status(201).json(populateGroup);
   } catch (error) {
     console.log("Error in creating Group :", error.message);
     res.status(500).json({ error: "Internal Server Error." });
   }
 };
 
-// const getGroupMessages = async (req, res) => {
-//   try {
-//     const { id: groupId } = req.params;
-//     const userId = req.user._id;
+const leaveGroupConversation = async (req, res) => {
+  try {
+    const { conversationId } = req.params;
+    const userId = req.user._id;
 
-//     // console.log("Groupid:", groupId, "userid:", userId);
-//     // Check if the user is a participant in the group
-//     const conversation = await Conversation.findOne({
-//       _id: groupId,
-//       participants: userId,
-//       isGroupChat: true,
-//     })
-//       .populate({
-//         path: "messages",
-//         populate: { path: "senderId", select: "username" },
-//       })
-//       .populate("participants", "username");
-//     // console.log("conversation", conversation);
+    const conversation = await Conversation.findOne({
+      _id: conversationId,
+      isGroupChat: true,
+    });
 
-//     if (!conversation) {
-//       return res
-//         .status(404)
-//         .json({ message: "Group not found or user not a participant." });
-//     }
+    if (!conversation) {
+      return res.status(400).json({ message: "Conversation not found." });
+    }
 
-//     const messages = conversation.messages;
+    const isParticipant = conversation.participants.includes(userId);
+    if (!isParticipant) {
+      return res
+        .status(400)
+        .json({ message: "User is not a participant of this conversation" });
+    }
 
-//     res.status(200).json(messages);
-//   } catch (error) {
-//     console.log("Error in getting group messages:", error.message);
-//     res.status(500).json({ error: "Internal Server Error." });
-//   }
-// };
+    conversation.participants.pull(userId);
+
+    await conversation.save();
+
+    await User.findByIdAndUpdate(userId, { $pull: { group: conversationId } });
+
+    res.status(200).json({ message: "You have left the group conversation" });
+  } catch (error) {
+    console.log("Error in leaving Group :", error.message);
+    res.status(500).json({ error: "Internal Server Error." });
+  }
+};
+
+// controllers/conversationController.js
+
+const removeMemberFromGroup = async (req, res) => {
+  try {
+    const { conversationId, memberId } = req.params;
+    const userId = req.user._id;
+
+    const conversation = await Conversation.findOne({
+      _id: conversationId,
+      isGroupChat: true,
+    });
+
+    if (!conversation) {
+      return res.status(400).json({ message: "Conversation not found." });
+    }
+
+    // Check if the user making the request is a participant
+    const isParticipant = conversation.participants.includes(userId);
+    if (!isParticipant) {
+      return res.status(403).json({ message: "You are not a participant of this conversation." });
+    }
+
+    const isSelf = memberId === userId;
+    if (!isSelf) {
+      const isMemberToBeRemoved = conversation.participants.includes(memberId);
+      if (!isMemberToBeRemoved) {
+        return res.status(400).json({ message: "The member is not a participant of this conversation." });
+      }
+    }
+
+    conversation.participants.pull(memberId);
+    await conversation.save();
+
+    await User.findByIdAndUpdate(memberId, { $pull: { groups: conversationId } });
+
+    res.status(200).json({ message: "Member has been removed from the group conversation." });
+  } catch (error) {
+    console.log("Error in removing member from group:", error.message);
+    res.status(500).json({ error: "Internal Server Error." });
+  }
+};
 
 module.exports = {
   createGroup,
+  leaveGroupConversation,
+  removeMemberFromGroup,
 };

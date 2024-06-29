@@ -12,7 +12,7 @@ const Message = ({ message }) => {
 
   const fromMe =
     (typeof message.senderId === "object"
-      ? message.senderId._id
+      ? message.senderId?._id
       : message.senderId) === authUser._id;
 
   // console.log(

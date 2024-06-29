@@ -9,13 +9,27 @@ const Message = ({ message }) => {
   // console.log(authUser);
   // console.log(message);
   const { selectedConversation } = useConversation();
-  const fromMe = message.senderId === authUser._id;
-  // console.log(message.senderId, authUser._id);
+
+  const fromMe =
+    (typeof message.senderId === "object"
+      ? message.senderId._id
+      : message.senderId) === authUser._id;
+
+  // console.log(
+  //   typeof message.senderId === "object"
+  //     ? message.senderId._id
+  //     : message.senderId,
+  //   authUser._id
+  // );
+
   // console.log("fromMe", fromMe);
+
   const chatClassName = fromMe ? "chat-end" : "chat-start";
+
   const profilePic = fromMe
     ? authUser?.profilePic
     : selectedConversation.profilePic;
+
   const bubbleBgColor = fromMe
     ? "rgba(250, 45, 250, 0.568)"
     : "rgba(232, 231, 232, 0.568)";

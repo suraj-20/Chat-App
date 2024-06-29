@@ -9,7 +9,7 @@ import useCreate from "../../hooks/useCreateGroup";
 
 const MessageContainer = ({ handlePopup, onBack, className }) => {
   const { selectedConversation, setSelectedConversation } = useConversation();
-  console.log(selectedConversation);
+  // console.log(selectedConversation);
   const { authUser } = useAuthContext();
 
   useEffect(() => {
